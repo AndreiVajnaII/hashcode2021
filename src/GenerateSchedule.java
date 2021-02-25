@@ -29,8 +29,14 @@ public class GenerateSchedule {
         Output out = new Output();
 
         List<List<String>> insForIntersection = getInsForIntersections();
+        for (String[] carPath : input.paths) {
+            for (String street : carPath) {
+                weights.put(street, weights.get(street) + 1);
+            }
+        }
+
         for (int i = 0; i < insForIntersection.size(); i++) {
-            List<String> streetsInIntersection = insForIntersection.get(0);
+            List<String> streetsInIntersection = insForIntersection.get(i);
             List<StreetSchedule> schedules = new ArrayList<StreetSchedule>();
             if (streetsInIntersection.size() == 1) {
                 //only one in street so light is always green
@@ -46,8 +52,12 @@ public class GenerateSchedule {
 
     public List<StreetSchedule> getBestScheduleSolution(List<String> streetsInIntersection) {
         List<StreetSchedule> schedules = new ArrayList<StreetSchedule>();
+        float sum = 0;
         for (String s : streetsInIntersection) {
-            StreetSchedule schedule = new StreetSchedule(s, weights.get(s));
+            sum += weights.get(s);
+        }
+        for (String s : streetsInIntersection) {
+            StreetSchedule schedule = new StreetSchedule(s, (int)Math.ceil(weights.get(s) / sum * Math.min(4, sum)));
             schedules.add(schedule);
         }
 

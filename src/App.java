@@ -6,56 +6,30 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
         String[] fileNames = {
             "a",
-            // "b",
-            // "c",
-            // "d",
-            // "e",
-            // "f"
+            "b",
+            "c",
+            "d",
+            "e",
+            "f"
         };
         for (String fileName: fileNames) {
             Input input = readFile(fileName);
-            var simulator = new Simulator(input);
-            Map<Integer, List<StreetSchedule>> schedules = new HashMap<>();
-            // schedules.put(1, List.of(
-            //     new StreetSchedule("rue-d-athenes", 2),
-            //     new StreetSchedule("rue-d-amsterdam", 1)
-            // ));
-            // schedules.put(0, List.of(
-            //     new StreetSchedule("rue-de-londres", 2)
-            // ));
-            // schedules.put(2, List.of(
-            //     new StreetSchedule("rue-de-moscou", 1)
-            // ));
-
-
-            schedules.put(1, List.of(
-                new StreetSchedule("rue-d-athenes", 1),
-                new StreetSchedule("rue-d-amsterdam", 1)
-            ));
-            schedules.put(0, List.of(
-                new StreetSchedule("rue-de-londres", 1)
-            ));
-            schedules.put(2, List.of(
-                new StreetSchedule("rue-de-moscou", 1)
-            ));
-            schedules.put(3, List.of(
-                new StreetSchedule("rue-de-rome", 1)
-            ));
-
-            var output = new Output(schedules);
-            System.out.println(simulator.simulate(output));
             
-            // Output output = new Output(solution.deliveries);
-            // writeFile(output, fileName, shouldPrintScore(args));
+            var solution = new GenerateSchedule(input);
+            var output = solution.getStreetsSchedule();
+            
+            if (shouldPrintScore(args)) {
+                var simulator = new Simulator(input);
+                System.out.println(NumberFormat.getInstance().format(simulator.simulate(output)));
+            }
+            
+            writeFile(output, fileName);
         }
     }
 
@@ -93,9 +67,7 @@ public class App {
         }
     }
 
-    public static void writeFile(Output output, String filename, boolean debug) throws IOException {
-        // NumberFormat nf = NumberFormat.getInstance();
-        // int score = 0;
+    public static void writeFile(Output output, String filename) throws IOException {
         Files.createDirectories(Paths.get("output"));
         try (PrintWriter writer = new PrintWriter(new FileWriter("output/" + filename + ".out"))) {
             writer.println(output.schedules.size());

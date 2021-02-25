@@ -36,20 +36,20 @@ public class Simulator {
         }
 
         score = 0;
-        for (int t = 0; t < input.simuationTime; t++) {
+        for (int t = 0; t <= input.simuationTime; t++) {
             List<CarToAdd> carsToAdd = new ArrayList<>();
 
             for (var entry : streetQueues.entrySet()) {
                 var queue = entry.getValue();
                 if (queue.size() > 0) {
+                    queue.forEach(car -> car.remaining--);
                     var street = entry.getKey();
                     var car = queue.peek();
                     var path = this.input.paths[car.carIndex];
-                    car.remaining--;
                     if (car.remaining <= 0) {
                         if (car.streetIndex == path.length - 1) {
                             queue.remove();
-                            score = this.input.points + input.simuationTime - t;
+                            score += this.input.points + input.simuationTime - t;
                         } else if (isGreen(street, output.schedules)) {
                             queue.remove();
                             car.streetIndex++;
@@ -67,13 +67,12 @@ public class Simulator {
 
             for (int i = 0; i < this.intersections.length; i++) {
                 if (output.schedules.containsKey(i)) {
+                    intersections[i].remaining--;
                     if (intersections[i].remaining == 0) {
                         List<StreetSchedule> schedules = output.schedules.get(i);
                         var nextSchedule = findNextSchedule(schedules, intersections[i].streetIndex);
                         intersections[i].streetIndex = nextSchedule;
                         intersections[i].remaining = schedules.get(nextSchedule).duration;
-                    } else {
-                        intersections[i].remaining--;
                     }
                 }
             }
