@@ -50,8 +50,16 @@ public class App {
 
             String[][] cars = new String[nrCars][];
             for (int i = 0; i < nrCars; i++) {
-                String[] line = reader.readLine().split(regex)
+                String[] line = reader.readLine().split(" ");
+                int nrRoutes = Integer.parseInt(line[0]);
+                String[] car = new String[nrRoutes];
+                for (int j = 0; j < nrRoutes; j++) {
+                    car[j] = line[j+1];
+                }
+                cars[i] = car;
             }
+
+            return new Input(simulationTime, nrIntersections, points, streets, cars);
         }
     }
 
