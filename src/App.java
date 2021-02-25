@@ -64,24 +64,18 @@ public class App {
     }
 
     public static void writeFile(Output output, String filename, boolean debug) throws IOException {
-        NumberFormat nf = NumberFormat.getInstance();
-        int score = 0;
+        // NumberFormat nf = NumberFormat.getInstance();
+        // int score = 0;
         Files.createDirectories(Paths.get("output"));
         try (PrintWriter writer = new PrintWriter(new FileWriter("output/" + filename + ".out"))) {
-            writer.println(output.deliveries.size());
-            for (Delivery delivery : output.deliveries) {
-                writer.print(delivery.pizzas.size());
-                for (Integer pizza : delivery.pizzas) {
-                    writer.print(" " + pizza);
+            writer.println(output.schedules.size());
+            for (int intersection : output.schedules.keySet()) {
+                writer.println(intersection);
+                List<StreetSchedule> schedules = output.schedules.get(intersection);
+                writer.println(schedules.size());
+                for (StreetSchedule s : schedules) {
+                    writer.println(s.street + " " + s.duration);
                 }
-                score += delivery.score();
-                if (debug) {
-                    writer.print(" --> " + nf.format(delivery.score()));
-                }
-                writer.print("\n");
-            }
-            if (debug) {
-                writer.println("--> " + nf.format(score));
             }
         }
     }
