@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Solve",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "hashcode2021_cbfe80a3"
+        },
+        {
+            "type": "java",
+            "name": "Solve with score",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "hashcode2021_cbfe80a3",
+            "args": "--with-score"
+        }
+    ]
+}
